@@ -39,7 +39,7 @@ class Store
 
   def save_inventory
     inventory_file = File.new('inventory.json', 'w')
-      inventory_file.write(@inventory.to_json)
+    inventory_file.write(@inventory.to_json)
     inventory_file.close
   end
 
@@ -55,30 +55,27 @@ class Store
   end
 
   def purchase(selector)
-
-    formats = ["VINYL", "CD", "TAPE"]
-    
     uid = selector.split('-')[0]
     format = selector.split('-')[1]
 
     case format
-    when "V"
-      if @inventory[uid]["VINYL"] > 0
-        @inventory[uid]["VINYL"] -= 1
-        puts "Removed 1 vinyl of #{@inventory[uid]["title"]} by #{@inventory[uid]["artist"]}"
+    when 'V'
+      if @inventory[uid]['VINYL'] > 0
+        @inventory[uid]['VINYL'] -= 1
+        puts "Removed 1 vinyl of #{@inventory[uid]['title']} by #{@inventory[uid]['artist']}"
       end
-    when "C"
-      if @inventory[uid]["CD"] > 0
-        @inventory[uid]["CD"] -= 1
-        puts "Removed 1 cd of #{@inventory[uid]["title"]} by #{@inventory[uid]["artist"]}"
+    when 'C'
+      if @inventory[uid]['CD'] > 0
+        @inventory[uid]['CD'] -= 1
+        puts "Removed 1 cd of #{@inventory[uid]['title']} by #{@inventory[uid]['artist']}"
       end
-    when "T"
-      if @inventory[uid]["TAPE"] > 0
-        @inventory[uid]["TAPE"] -= 1
-        puts "Removed 1 tape of #{@inventory[uid]["title"]} by #{@inventory[uid]["artist"]}"
+    when 'T'
+      if @inventory[uid]['TAPE'] > 0
+        @inventory[uid]['TAPE'] -= 1
+        puts "Removed 1 tape of #{@inventory[uid]['title']} by #{@inventory[uid]['artist']}"
       end
     else
-      puts "invalid format"
+      puts 'invalid format'
     end
   end
 end
