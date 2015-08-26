@@ -1,24 +1,5 @@
 require 'json'
-
-# Albums in the Store inventory and how they are written to disk
-class Album
-  attr_reader :uid, :artist, :title, :format, :release_year, :quantity
-
-  def initialize(uid, artist, title, format, release_year, quantity)
-    @uid = uid
-    @artist = artist
-    @title = title
-    @format = format
-    @release_year = release_year
-    @quantity = quantity
-  end
-
-  def to_json
-    { 'uid' => @uid, 'artist' => @artist, 'title' => @title,
-      'format' => @format, 'release_year' => @release_year,
-      'quantity' => @quantity }.to_json
-  end
-end
+require 'erb'
 
 # Maintains inventory and is responsible for saving and loading from disk.
 # Also responsible for purchasing and other store related actiities.
@@ -61,7 +42,15 @@ class Store
     inventory_file.close
   end
 
-  def search
+  # TODO: Error checking on incorrect field
+  def search(field, term)
+    results = []
+    self.inventory.each do |_key, album|
+      if album.instance_variable_get(field).downcase =~ /#{Regexp.quote(term.downcase)}/
+        results << album
+      end
+    end
+    results
   end
 
   def purchase

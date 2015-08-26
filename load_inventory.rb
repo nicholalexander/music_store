@@ -1,5 +1,6 @@
 require 'pry'
 require './store.rb'
+require './album.rb'
 
 # load_inventory.rb <filename>
 
@@ -8,6 +9,7 @@ require './store.rb'
 # exporting it to our master inventory file.
 #
 # The parse methods return a hash of our inventory.
+
 def get_supplier_format(file)
   File.extname(file).gsub('.', '')
 end
