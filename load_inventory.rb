@@ -20,6 +20,8 @@ def parse_csv(file)
     album = Hash.new
 
     # check if artist is a compound artist aka "Peter, Paul and Mary"
+    # if it is, take the first chunk of the line then parse into fields
+    # if not, parse directly to fields
     if data[0][0] == "\""
       end_of_artist = line.rindex("\"")
       album[:artist] = line[1..end_of_artist-1]
@@ -43,6 +45,20 @@ def parse_csv(file)
 end
 
 def parse_pipe(file)
+  file.each_line do |line|
+    data = line.chomp.split('|')
+    album = Hash.new
+
+    # use [-2] to remove trailing spaces except on last element.
+    # starting from index 1 to remove preceeding spaces
+    album[:quantity] = data[0][0..-2]
+    album[:format] = data[1][1..-2]
+    album[:release_year] = data[2][1..-2]
+    album[:artist] = data[3][1..-2]
+    album[:title] = data[4][1..-1]
+
+    puts album
+  end
 end
 
 # def read_inventory(file)
