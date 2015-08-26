@@ -14,7 +14,7 @@ class Store
 
   def add_inventory(album_hash)
     # build album
-    # TODO: refactor so we don't need album class?
+    # TODO: refactor so we don't need album class anymore?
     album = Album.new(album_hash[:artist], album_hash[:title],
                       album_hash[:format], album_hash[:release_year],
                       album_hash[:quantity])
@@ -54,6 +54,31 @@ class Store
     results
   end
 
-  def purchase
+  def purchase(selector)
+
+    formats = ["VINYL", "CD", "TAPE"]
+    
+    uid = selector.split('-')[0]
+    format = selector.split('-')[1]
+
+    case format
+    when "V"
+      if @inventory[uid]["VINYL"] > 0
+        @inventory[uid]["VINYL"] -= 1
+        puts "Removed 1 vinyl of #{@inventory[uid]["title"]} by #{@inventory[uid]["artist"]}"
+      end
+    when "C"
+      if @inventory[uid]["CD"] > 0
+        @inventory[uid]["CD"] -= 1
+        puts "Removed 1 cd of #{@inventory[uid]["title"]} by #{@inventory[uid]["artist"]}"
+      end
+    when "T"
+      if @inventory[uid]["TAPE"] > 0
+        @inventory[uid]["TAPE"] -= 1
+        puts "Removed 1 tape of #{@inventory[uid]["title"]} by #{@inventory[uid]["artist"]}"
+      end
+    else
+      puts "invalid format"
+    end
   end
 end
