@@ -14,6 +14,14 @@ def get_supplier_format(file)
   File.extname(file).gsub('.', '')
 end
 
+def sentance_case(offending_string)
+  offending_string.gsub(/\w+/) do |word|
+    word.capitalize
+  end
+
+end
+
+
 def parse_csv(file)
   store = Store.new
   file.each_line do |line|
@@ -25,17 +33,17 @@ def parse_csv(file)
     # if not, parse directly to fields
     if data[0][0] == "\""
       end_of_artist = line.rindex("\"")
-      supplier_album[:artist] = line[1..end_of_artist - 1]
+      supplier_album[:artist] = sentance_case(line[1..end_of_artist - 1])
       line = line[end_of_artist + 2..-1]
       data = line.split(',')
 
-      supplier_album[:title] = data[0]
-      supplier_album[:format] = data[1]
+      supplier_album[:title] = sentance_case(data[0])
+      supplier_album[:format] = data[1].upcase
       supplier_album[:release_year] = data[2]
     else
-      supplier_album[:artist] = data[0]
-      supplier_album[:title] = data[1]
-      supplier_album[:format] = data[2]
+      supplier_album[:artist] = sentance_case(data[0])
+      supplier_album[:title] = sentance_case(data[1])
+      supplier_album[:format] = data[2].upcase
       supplier_album[:release_year] = data[3]
     end
 
@@ -48,6 +56,7 @@ def parse_csv(file)
 end
 
 def parse_pipe(file)
+
   store = Store.new
   file.each_line do |line|
     data = line.chomp.split('|')
@@ -55,11 +64,11 @@ def parse_pipe(file)
 
     # use [-2] to remove trailing spaces except on last element.
     # starting from index 1 to remove preceeding spaces
-    supplier_album[:quantity] = data[0][0..-2]
-    supplier_album[:format] = data[1][1..-2]
+    supplier_album[:quantity] = data[0][0..-2].to_i
+    supplier_album[:format] = data[1][1..-2].upcase
     supplier_album[:release_year] = data[2][1..-2]
-    supplier_album[:artist] = data[3][1..-2]
-    supplier_album[:title] = data[4][1..-1]
+    supplier_album[:artist] = sentance_case(data[3][1..-2])
+    supplier_album[:title] = sentance_case(data[4][1..-1])
     store.add_inventory(supplier_album)
   end
   store.save_inventory
