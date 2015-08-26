@@ -33,7 +33,7 @@ class Store
       end
     else
       @inventory[album.uid] = {:title => album.title, :artist => album.artist,
-        "#{album.format}" => album.quantity}
+        :release_year => album.release_year, "#{album.format}" => album.quantity}
     end
   end
 
@@ -46,9 +46,9 @@ class Store
   # TODO: Error checking on incorrect field
   def search(field, term)
     results = []
-    self.inventory.each do |_key, album|
-      if album.instance_variable_get(field).downcase =~ /#{Regexp.quote(term.downcase)}/
-        results << album
+    self.inventory.each do |key, album|
+      if album[field].downcase =~ /#{Regexp.quote(term.downcase)}/
+        results << key
       end
     end
     results
