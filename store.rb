@@ -32,7 +32,7 @@ class Store
         @inventory[album.uid][album.format] = album.quantity        
       end
     else
-      @inventory[album.uid] = {:title => album.title, :artist => album.artist,
+      @inventory[album.uid] = {:album => album.title, :artist => album.artist,
         :release_year => album.release_year, "#{album.format}" => album.quantity}
     end
   end

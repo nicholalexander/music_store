@@ -18,7 +18,9 @@ results.each do |result|
   puts "Released: #{store.inventory[result]["release_year"]}"
   formats.each do |format|
     if store.inventory[result].key?(format)
-      puts "#{format}(#{store.inventory[result][format]}): #{result}-#{format[0]}"
+      if store.inventory[result][format] > 0
+        puts "#{format}(#{store.inventory[result][format]}): #{result}-#{format[0]}"
+      end
     end
   end
 end   
