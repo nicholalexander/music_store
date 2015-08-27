@@ -19,4 +19,9 @@ class StockItem
       { 'id' => @id, 'format' => @format, 'quantity' => @quantity }.to_json
   end
 
+  def render
+    @template = File.read("stock_item_template.erb")
+    ERB.new(@template).result(binding)
+  end
+
 end

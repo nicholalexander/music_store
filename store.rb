@@ -42,17 +42,32 @@ class Store
     inventory_file.close
   end
 
+  # Put the albums into an array if they match the search
   # TODO: Error checking on incorrect field
   def search(field, term)
     results = []
-    self.inventory.each do |key, album|
-      if album[field].downcase =~ /#{Regexp.quote(term.downcase)}/
-        results << key
-      end
+    self.inventory.each do |key, value|
+
+
+      # binding.pry
+
+
+      results
+      results << value[0] if value[0].instance_variable_get(field).downcase =~ /#{Regexp.quote(term.downcase)}/
     end
     results
   end
 
+  def report(albums)
+    albums.each do |album|
+      stock_items = @inventory[album.uid][1..-1]
+      puts album.render
+      stock_items.each do |stock_item|
+        puts stock_item.render
+      end
+    end
+  end
+  
   def purchase(selector)
     uid = selector.split('-')[0]
     format = selector.split('-')[1]
