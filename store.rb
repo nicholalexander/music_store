@@ -1,45 +1,68 @@
 require 'json'
 require 'erb'
+require 'yaml'
 
 # Maintains inventory and is responsible for saving and loading from disk.
 # Also responsible for purchasing and other store related actiities.
+# 
+# The structure of the @inventory variable is a hash with the main key being 
+# the unique id for each album and each value associate with that key being an array
+# where the first element is the album and the remaining elements are stock items.
+
 class Store
   attr_reader :inventory
 
+  DATA_FILE = 'inventory.yaml'
+
   def initialize
     @inventory = {}
-    inventory_from_file = File.read('inventory.json')
-    @inventory = JSON.parse(inventory_from_file)
+    inventory_from_file = File.read(DATA_FILE)
+    @inventory = YAML::load(inventory_from_file)
   end
 
-  def add_inventory(album_hash)
-    # build album
-    # TODO: refactor so we don't need album class anymore?
-    album = Album.new(album_hash[:artist], album_hash[:title],
-                      album_hash[:format], album_hash[:release_year],
-                      album_hash[:quantity])
+  def add_inventory(supplier_album_hash)
+    # Do we have this album already?
+    # If we do, use it.
+    # If we don't, make a new album, stock_item, and put it in the inventory
+    album = Album.new(supplier_album_hash[:artist], supplier_album_hash[:title], 
+                      supplier_album_hash[:release_year])
+    stock_item = StockItem.new(album.uid, supplier_album_hash[:format], supplier_album_hash[:quantity])
 
-    # add it to inventory
-    # first check if we already have this album
-    # if we do, check if we have the format
-    # if we do, just update quantity.
-    # if we don't, add in a new format
-    # if we don't even have the album, add it in!
-    if @inventory[album.uid] 
-      if @inventory[album.uid].key?(album.format)
-        @inventory[album.uid][album.format] += album.quantity
-      else
-        @inventory[album.uid][album.format] = album.quantity        
-      end
-    else
-      @inventory[album.uid] = {:album => album.title, :artist => album.artist,
-        :release_year => album.release_year, "#{album.format}" => album.quantity}
-    end
+    # TODO: refactor into add_stock_item
+    # if @inventory.has_key? (album.uid)
+    #   # album already exists, now add stock_item
+    #   added = false
+
+    #   if @inventory[album.uid].count > 1
+
+    #     @inventory[album.uid][1..-1].each do |existing_stock_item|
+
+    #       if existing_stock_item["id"] == stock_item.id
+    #         existing_stock_item[quantity] += stock_item.quantity
+    #         added = true
+    #       end
+    #     end
+
+    #     if added == false
+    #       # then add new stock item to the inventory hash array
+    #       @inventory[album.uid] << stock_item
+    #     end
+    #   end
+
+    # else 
+    #   # otherwise, this is a new album and new stock items, add them in!
+    #   @inventory[album.uid] = [album, stock_item]
+    # end
+    @inventory[album.uid] = [album, stock_item]
   end
 
   def save_inventory
-    inventory_file = File.new('inventory.json', 'w')
-    inventory_file.write(@inventory.to_json)
+    binding.pry
+
+
+    puts "bsldf"
+    inventory_file = File.new(DATA_FILE, 'w')
+    inventory_file.write(YAML::dump(@inventory))
     inventory_file.close
   end
 

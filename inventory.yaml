@@ -1,0 +1,56 @@
+---
+147540edc9ab5d69ffde0af5aa821f78:
+- !ruby/object:Album
+  uid: 147540edc9ab5d69ffde0af5aa821f78
+  artist: Nirvana
+  title: In Utero
+  release_year: '1993'
+- !ruby/object:StockItem
+  album_id: 147540edc9ab5d69ffde0af5aa821f78
+  format: CD
+  quantity: 2
+  id: cd0587c68d256d7f980c70df3df4c297
+5458a71bc753b0ce05edb027d4df9536:
+- !ruby/object:Album
+  uid: 5458a71bc753b0ce05edb027d4df9536
+  artist: Vanilla Ice
+  title: To The Extreme
+  release_year: '1990'
+- !ruby/object:StockItem
+  album_id: 5458a71bc753b0ce05edb027d4df9536
+  format: TAPE
+  quantity: 1
+  id: d11282a79c4e156d6200dd946e01edc6
+9893612e2d86dc0912ec4ac201a8dfc0:
+- !ruby/object:Album
+  uid: 9893612e2d86dc0912ec4ac201a8dfc0
+  artist: Pink Floyd
+  title: The Wall
+  release_year: '1979'
+- !ruby/object:StockItem
+  album_id: 9893612e2d86dc0912ec4ac201a8dfc0
+  format: VINYL
+  quantity: 3
+  id: 4a82b081c410d13755866bea45536f93
+ed460aed93bca891a6d4980f6188f01b:
+- !ruby/object:Album
+  uid: ed460aed93bca891a6d4980f6188f01b
+  artist: Pink Floyd
+  title: The Dark Side Of The Moon
+  release_year: '1973'
+- !ruby/object:StockItem
+  album_id: ed460aed93bca891a6d4980f6188f01b
+  format: CD
+  quantity: 3
+  id: 6c45c275eec3d95d4f934ea49eafd796
+77562fea93e3fd3f00d388d971f74de8:
+- !ruby/object:Album
+  uid: 77562fea93e3fd3f00d388d971f74de8
+  artist: Peter, Paul And Mary
+  title: In The Wind
+  release_year: '1963'
+- !ruby/object:StockItem
+  album_id: 77562fea93e3fd3f00d388d971f74de8
+  format: CD
+  quantity: 2
+  id: f6cf6078cd027cee168b419ea7988c84

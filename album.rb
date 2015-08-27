@@ -5,23 +5,23 @@ require 'erb'
 class Album
   attr_reader :uid, :artist, :title, :format, :release_year, :quantity
 
-  def initialize(artist, title, format_type, release_year, quantity)
+  def initialize(artist, title, release_year)
     digest_string = (artist + title + release_year).gsub(/\s+/, '')
     @uid = Digest::MD5.hexdigest(digest_string)
     @artist = artist
     @title = title
-    @format = format_type
-    @quantity = quantity
     @release_year = release_year
   end
 
-  def to_json
+  def to_json (options = {})
     { 'uid' => @uid, 'artist' => @artist, 'title' => @title,
-      'release_year' => @release_year,
-      'format' => @format,
-      'quantity'=> quantity }.to_json
+      'release_year' => @release_year }.to_json
   end
 
+  # def self.json_create(o)
+  #   new(o["uid"]["string"], o["data"]["number"])
+  # end
+  
   def render
     @template = File.read("album_template.erb")
     ERB.new(@template).result(binding)

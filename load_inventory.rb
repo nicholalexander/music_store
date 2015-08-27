@@ -1,6 +1,7 @@
 require 'pry'
 require './store.rb'
 require './album.rb'
+require './stock_item.rb'
 
 # load_inventory.rb <filename>
 
@@ -18,9 +19,7 @@ def sentance_case(offending_string)
   offending_string.gsub(/\w+/) do |word|
     word.capitalize
   end
-
 end
-
 
 def parse_csv(file)
   store = Store.new
