@@ -4,11 +4,10 @@ require 'yaml'
 
 # Maintains inventory and is responsible for saving and loading from disk.
 # Also responsible for purchasing and other store related actiities.
-# 
-# The structure of the @inventory variable is a hash with the main key being 
+#
+# The structure of the @inventory variable is a hash with the main key being
 # the unique id for each album and each value associate with that key being an array
 # where the first element is the album and the remaining elements are stock items.
-
 class Store
   attr_reader :inventory
 
@@ -26,8 +25,9 @@ class Store
 
     stock_item = StockItem.new(album.uid, supplier_album_hash[:format], supplier_album_hash[:quantity])
 
-    if @inventory.has_key? (album.uid)
-      existing_stock_item = @inventory[album.uid].find {|x| x.format == stock_item.format}
+    # TODO: Refactor to simplify if/else madness
+    if @inventory.key? (album.uid)
+      existing_stock_item = @inventory[album.uid].find { |x| x.format == stock_item.format }
       if existing_stock_item
         existing_stock_item.quantity += stock_item.quantity
       else
@@ -48,13 +48,7 @@ class Store
   # TODO: Error checking on incorrect field
   def search(field, term)
     results = []
-    self.inventory.each do |key, value|
-
-
-      # binding.pry
-
-
-      results
+    @inventory.each do |_key, value|
       results << value[0] if value[0].instance_variable_get(field).downcase =~ /#{Regexp.quote(term.downcase)}/
     end
     results
@@ -71,13 +65,14 @@ class Store
   end
 
   def purchase(selector)
-    @inventory.each do |key, value| 
-      value[1..-1].each do |stock| 
-        if stock.id == selector 
+    @inventory.each do |_key, value|
+      value[1..-1].each do |stock|
+        if stock.id == selector
           stock.quantity -= 1
           puts "Removed 1 #{stock.format} of #{value[0].title} by #{value[0].artist}"
         end
       end 
     end
   end
+
 end

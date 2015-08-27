@@ -17,11 +17,7 @@ class Album
     { 'uid' => @uid, 'artist' => @artist, 'title' => @title,
       'release_year' => @release_year }.to_json
   end
-
-  # def self.json_create(o)
-  #   new(o["uid"]["string"], o["data"]["number"])
-  # end
-  
+    
   def render
     @template = File.read("album_template.erb")
     ERB.new(@template).result(binding)
