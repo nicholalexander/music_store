@@ -21,46 +21,22 @@ class Store
   end
 
   def add_inventory(supplier_album_hash)
-    # Do we have this album already?
-    # If we do, use it.
-    # If we don't, make a new album, stock_item, and put it in the inventory
     album = Album.new(supplier_album_hash[:artist], supplier_album_hash[:title], 
                       supplier_album_hash[:release_year])
     stock_item = StockItem.new(album.uid, supplier_album_hash[:format], supplier_album_hash[:quantity])
-
-    # TODO: refactor into add_stock_item
-    # if @inventory.has_key? (album.uid)
-    #   # album already exists, now add stock_item
-    #   added = false
-
-    #   if @inventory[album.uid].count > 1
-
-    #     @inventory[album.uid][1..-1].each do |existing_stock_item|
-
-    #       if existing_stock_item["id"] == stock_item.id
-    #         existing_stock_item[quantity] += stock_item.quantity
-    #         added = true
-    #       end
-    #     end
-
-    #     if added == false
-    #       # then add new stock item to the inventory hash array
-    #       @inventory[album.uid] << stock_item
-    #     end
-    #   end
-
-    # else 
-    #   # otherwise, this is a new album and new stock items, add them in!
-    #   @inventory[album.uid] = [album, stock_item]
-    # end
-    @inventory[album.uid] = [album, stock_item]
+    if @inventory.has_key? (album.uid)
+      existing_stock_item = @inventory[album.uid].find {|x| x.format == stock_item.format}
+      if existing_stock_item
+        existing_stock_item.quantity += stock_item.quantity
+      else
+        @inventory[album.uid] << stock_item
+      end
+    else
+      @inventory[album.uid] = [album, stock_item]
+    end
   end
 
   def save_inventory
-    binding.pry
-
-
-    puts "bsldf"
     inventory_file = File.new(DATA_FILE, 'w')
     inventory_file.write(YAML::dump(@inventory))
     inventory_file.close
