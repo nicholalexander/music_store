@@ -23,7 +23,9 @@ class Store
   def add_inventory(supplier_album_hash)
     album = Album.new(supplier_album_hash[:artist], supplier_album_hash[:title], 
                       supplier_album_hash[:release_year])
+
     stock_item = StockItem.new(album.uid, supplier_album_hash[:format], supplier_album_hash[:quantity])
+
     if @inventory.has_key? (album.uid)
       existing_stock_item = @inventory[album.uid].find {|x| x.format == stock_item.format}
       if existing_stock_item
@@ -67,29 +69,15 @@ class Store
       end
     end
   end
-  
-  def purchase(selector)
-    uid = selector.split('-')[0]
-    format = selector.split('-')[1]
 
-    case format
-    when 'V'
-      if @inventory[uid]['VINYL'] > 0
-        @inventory[uid]['VINYL'] -= 1
-        puts "Removed 1 vinyl of #{@inventory[uid]['title']} by #{@inventory[uid]['artist']}"
-      end
-    when 'C'
-      if @inventory[uid]['CD'] > 0
-        @inventory[uid]['CD'] -= 1
-        puts "Removed 1 cd of #{@inventory[uid]['title']} by #{@inventory[uid]['artist']}"
-      end
-    when 'T'
-      if @inventory[uid]['TAPE'] > 0
-        @inventory[uid]['TAPE'] -= 1
-        puts "Removed 1 tape of #{@inventory[uid]['title']} by #{@inventory[uid]['artist']}"
-      end
-    else
-      puts 'invalid format'
+  def purchase(selector)
+    @inventory.each do |key, value| 
+      value[1..-1].each do |stock| 
+        if stock.id == selector 
+          stock.quantity -= 1
+          puts "Removed 1 #{stock.format} of #{value[0].title} by #{value[0].artist}"
+        end
+      end 
     end
   end
 end

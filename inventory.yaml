@@ -46,7 +46,7 @@ ed460aed93bca891a6d4980f6188f01b:
 - !ruby/object:StockItem
   album_id: ed460aed93bca891a6d4980f6188f01b
   format: CD
-  quantity: 6
+  quantity: 5
   id: 6c45c275eec3d95d4f934ea49eafd796
 77562fea93e3fd3f00d388d971f74de8:
 - !ruby/object:Album
